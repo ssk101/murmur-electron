@@ -1,0 +1,37 @@
+{
+  "name": "murmur-electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron ./app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "construct-style-sheets-polyfill": "^2.2.10",
+    "electron": "^6.0.12",
+    "node-fetch": "^2.6.0"
+  },
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "7.1.2",
+    "@babel/plugin-proposal-decorators": "^7.6.0",
+    "@babel/plugin-proposal-export-namespace-from": "7.0.0",
+    "@babel/plugin-proposal-function-bind": "^7.0.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+    "@babel/plugin-transform-async-to-generator": "7.1.0",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "7.1.0",
+    "@babel/runtime": "^7.6.3",
+    "babel-plugin-import-postcss": "^2.0.0",
+    "babelify": "^10.0.0",
+    "browserify": "^16.5.0",
+    "electron-packager": "^14.0.6",
+    "postcss-preset-env": "^6.7.0"
+  }
+}
