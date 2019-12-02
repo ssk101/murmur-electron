@@ -2,16 +2,24 @@
   "name": "murmur-electron",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "electron ./app.js"
+    "start": "./node_modules/.bin/electron .",
+    "run-linux": "./dist/linux-unpacked/murmur-electron",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "author": "",
   "license": "ISC",
+  "build": {
+    "appId": "murmur",
+    "mac": {
+      "category": "your.app.category.type"
+    }
+  },
   "dependencies": {
     "construct-style-sheets-polyfill": "^2.2.10",
-    "electron": "^6.0.12",
-    "node-fetch": "^2.6.0"
+    "python-shell": "^1.0.8"
   },
   "browserify": {
     "transform": [
@@ -31,6 +39,8 @@
     "babel-plugin-import-postcss": "^2.0.0",
     "babelify": "^10.0.0",
     "browserify": "^16.5.0",
+    "electron": "^6.0.12",
+    "electron-builder": "^21.2.0",
     "electron-packager": "^14.0.6",
     "postcss-preset-env": "^6.7.0"
   }

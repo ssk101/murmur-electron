@@ -1,1 +1,4 @@
 node_modules
+__pycache__
+murmur-electron-linux-x64
+dist

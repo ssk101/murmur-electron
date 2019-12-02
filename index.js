@@ -1,58 +1,37 @@
 const { app, BrowserWindow } = require('electron')
 const murmurUrl = 'https://asoftmurmur.com/?m=rno99thn20wve66wnd38fre22'
-
 let win
 
+const opts = {
+  width: process.env.DEV ? 1000 : 130,
+  height: process.env.DEV ? 1000 : 143,
+}
+
 async function createWindow() {
-  win = new BrowserWindow({
-    width: 130,
-    height: 143,
+  win = new BrowserWindow(Object.assign(opts, {
+    
     frame: false,
-    titleBarStyle: 'hidden',
     // x: 0,
     // y: 0,
     alwaysOnTop: true,
-    autoHideMenuBar: true,
+    // autoHideMenuBar: true,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      devTools: process.env.DEV,
     }
-  })
+  }))
 
   await win.loadURL(murmurUrl)
 
   const js = async function() {
-    const fetch = require('node-fetch')
     const { remote } = require('electron')
+    const { PythonShell } =  require('python-shell')
 
-    const API_BASE = 'https://api.luxafor.com/webhook/v1/actions/solid_color'
-    const USER_ID = ''
-
-    async function setColor(color, custom) {
-      var actionFields = {
-        color: color,
-      }
-      Object.assign(actionFields, custom
-        ? { custom_color: custom.toUpperCase() }
-        : {}
-      )
-
-      fetch(API_BASE, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: USER_ID,
-          actionFields: actionFields,
-        })
+    async function setColor(color) {
+      PythonShell.run('./luxafor.py', { args: color }, (err, res) => {
+        if(err) throw(err)
+        console.log(res)
       })
-        .then(res => {
-          console.log(res)
-          return res.json()
-        })
-        .catch(e => {
-          console.error(e)
-        })
     }
     
     const css = `
@@ -141,8 +120,8 @@ async function createWindow() {
       .luxa-buttons button.green {
         background: green;
       }
-      .luxa-buttons button.orange {
-        background: orange;
+      .luxa-buttons button.yellow {
+        background: yellow;
       }
     `
 
@@ -161,7 +140,7 @@ async function createWindow() {
         <button class="blue" data-color="blue"></button>
         <button class="red" data-color="red"></button>
         <button class="green" data-color="green"></button>
-        <button class="orange" data-color="orange" data-custom-color="ffa140"></button>
+        <button class="yellow" data-color="yellow"></button>
       </div>
     `
     
@@ -177,8 +156,7 @@ async function createWindow() {
     document.querySelectorAll('.luxa-buttons button').forEach(button => {
       button.addEventListener('click', () => {
         const color = button.getAttribute('data-color')
-        const custom = button.getAttribute('data-custom-color')
-        setColor(color, custom)
+        setColor(color)
       })
     })
 
