@@ -1,7 +1,8 @@
-Python > 3 required
+Python 3 required.
 
 Mac:
 $ brew install python
+$ sudo mv /usr/local/include/block.h /usr/local/include/block.h.old # this file causes an issue with installing hidapi for some raisin.
 $ pip3 install hidapi
 $ yarn start
 
