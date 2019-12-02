@@ -1,3 +1,11 @@
-Linux:
+Python > 3 required
 
-Run `udev-rules.sh` as sudo to add permissions to interact with the Luxafor USB device.
+Mac:
+$ brew install python
+$ pip3 install hidapi
+$ yarn start
+
+Linux:
+$ sudo ./udev-rules.sh # This adds permissions to interact with the Luxafor USB device.
+$ pip install pyusb
+$ yarn start

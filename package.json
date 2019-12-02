@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "./node_modules/.bin/electron .",
-    "run-linux": "./dist/linux-unpacked/murmur-electron",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },

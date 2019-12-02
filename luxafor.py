@@ -1,20 +1,29 @@
 #!/usr/bin/python
 
-import usb.core
-import usb.util
 import sys
+import platform
+print(platform.system())
 
-dev = usb.core.find(idVendor=0x04d8, idProduct=0xf372)
+vendor = 0x04d8
+product = 0xf372
 
-if dev is None:
-  raise ValueError('Device not found')
+if platform.system() == "Darwin":
+  import hid
+  dev = hid.device(vendor, product)
+  dev.open(vendor, product)
+  dev.send_feature_report([0x02, 0x10, 0x00,0x00,0x00,0x00,0x00,0x00])
+elif platform.system() == "Linux":
+  import usb.core
+  import usb.util
+  dev = usb.core.find(idVendor = vendor, idProduct = product)
+  if dev is None:
+    raise ValueError('Device not found')
+  try:
+    dev.detach_kernel_driver(0)
+  except Exception as error:
+    pass
+  dev.set_configuration()
 
-try:
-  dev.detach_kernel_driver(0)
-except Exception as error:
-  pass
- 
-dev.set_configuration()
 
 colors = dict({
   "red": 82,

@@ -9,12 +9,11 @@ const opts = {
 
 async function createWindow() {
   win = new BrowserWindow(Object.assign(opts, {
-    
     frame: false,
     // x: 0,
     // y: 0,
-    alwaysOnTop: true,
     // autoHideMenuBar: true,
+    alwaysOnTop: true,
     webPreferences: {
       nodeIntegration: true,
       devTools: process.env.DEV,
