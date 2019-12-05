@@ -10,29 +10,27 @@ SLACK_BASE = "https://slack.com/api/"
 SLACK_TOKEN = os.getenv('SLACK_LUXAFOR_TOKEN')
 SLACK_USER_ID = os.getenv('SLACK_USER_ID')
 SLACK_STATUSES = dict({
-  'red': "Do not disturb",
-  'yellow': "I am busy, but may respond to urgent requests",
-  'green': "Available for shenanigans",
-  'blue': "I'm probably not too busy"
+  'luxa-red': "Please do not disturb",
+  'luxa-yellow': "I'm busy, but may respond to urgent requests",
+  'luxa-green': "Available for shenanigans",
+  'luxa-blue': "I'm probably not too busy",
+  'hamburger': "Lunch",
+  'date': "In a meeting",
+  'strut': "Away from keyboard"
 })
-SLACK_EMOJI_PREFIX = "luxa"
 
 VENDOR = 0x04d8
 PRODUCT = 0xf372
-LINUX_LED_ON = 1
 LINUX_LED_OFF = [0, 0]
 
-MAC_COLORS = dict({
-  "red": [0, 1, 0xFF, 255, 0, 0],
-  "green": [0, 1, 0xFF, 0, 255, 0],
-  "blue": [0, 1, 0xFF, 0, 0, 255],
-  "yellow": [0, 1, 0xFF, 255, 255, 0],
-})
-LINUX_COLORS = dict({
-  "red": 82,
-  "green": 71,
-  "blue": 66,
-  "yellow": 89
+COLORS = dict({
+  "luxa-red": [255, 0, 0],
+  "luxa-green": [0, 255, 0],
+  "luxa-blue": [0, 0, 255],
+  "luxa-yellow": [255, 100, 0],
+  "hamburger": [255, 255, 255],
+  "date": [255, 255, 255],
+  "strut": [255, 255, 255]
 })
 
 if platform.system() == "Darwin":
@@ -52,7 +50,7 @@ elif platform.system() == "Linux":
     pass
   dev.set_configuration()
 
-def set_slack_status(color):
+def set_slack_status(emoji):
   if not SLACK_TOKEN or not SLACK_USER_ID:
     return 'SLACK_USER_ID or SLACK_TOKEN are not set.'
 
@@ -60,8 +58,8 @@ def set_slack_status(color):
     'token': SLACK_TOKEN,
     'user': SLACK_USER_ID,
     'profile': {
-      'status_text': SLACK_STATUSES[color],
-      'status_emoji': ':' + SLACK_EMOJI_PREFIX + '-' + color + ':'
+      'status_text': SLACK_STATUSES[emoji],
+      'status_emoji': ':' + emoji + ':'
     }
   }
 
@@ -74,36 +72,14 @@ def set_slack_status(color):
     }
   ).json()
 
-def resolve_color(color):
-  orig = color = color.lower()
-  if color == 'off':
-    color = 'black'
-  if len(color) == 7:
-    color = (
-      int(color[1:3], 16),
-      int(color[3:5], 16),
-      int(color[5:7], 16)
-    )
-  elif len(color) == 4:
-    color = (
-      int(color[1:2] * 2, 16),
-      int(color[2:3] * 2, 16),
-      int(color[3:4] * 2, 16)
-    )
-  else:
-    raise ValueError('{} is not a valid color code'.format(orig))
-
-  return color
-
-def set_color(color):
+def set_color(emoji):
   if(platform.system() == 'Linux'):
     dev.write(1, LINUX_LED_OFF)
-    dev.write(1, [0, LINUX_COLORS[color]])
-    # dev.write(1, bytes([0, 1, 0xFF, 255, 255, 255]))
+    dev.write(1, bytes([1, 0xff] + COLORS[emoji]))
   elif(platform.system() == 'Darwin'):
-    dev.write(MAC_COLORS[color])
+    dev.write([0, 1, 0xFF] + COLORS[emoji])
 
-  set_slack_status(color)
+  set_slack_status(emoji)
 
 if __name__ == "__main__":
   print(sys.argv)
