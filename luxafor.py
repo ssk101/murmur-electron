@@ -12,8 +12,8 @@ SLACK_USER_ID = os.getenv('SLACK_USER_ID')
 SLACK_STATUSES = dict({
   'luxa-red': "Please do not disturb",
   'luxa-yellow': "I'm busy, but may respond to urgent requests",
-  'luxa-green': "Available for shenanigans",
-  'luxa-blue': "I'm probably not too busy",
+  'luxa-green': "I can be disturbed",
+  'luxa-blue': "I can be disturbed, but I can't hear you IRL",
   'hamburger': "Lunch",
   'date': "In a meeting",
   'strut': "Away from keyboard"
