@@ -1,25 +1,34 @@
-var postcssPresetEnv = require('postcss-preset-env')
 
-module.exports = {
-  presets: [
-    '@babel/preset-env',
-  ],
-  plugins: [
-    '@babel/plugin-transform-runtime',
-    '@babel/plugin-proposal-optional-chaining',
-    [
-      "@babel/plugin-proposal-decorators",
-      {
-        "legacy": true
-      }
+module.exports = (api) => {
+  api.cache(true)
+
+  const config = {
+    presets: [
+      [
+        '@babel/preset-env',
+        {
+          targets: {
+            browsers: [
+              '> 5%',
+            ],
+          },
+        },
+      ],
     ],
-    [
-      'import-postcss', {
-        plugins: [
-          postcssPresetEnv({ stage: 0 })
-        ],
-        map: { inline: true }
-      }
-    ]
-  ]
+    plugins: [
+      '@babel/plugin-proposal-export-default-from',
+      '@babel/plugin-proposal-function-bind',
+      '@babel/plugin-proposal-optional-chaining',
+      '@babel/plugin-transform-async-to-generator',
+      '@babel/plugin-proposal-object-rest-spread',
+      'class-name',
+      [
+        '@babel/plugin-proposal-decorators', {
+          legacy: true,
+        },
+      ],
+    ],
+  }
+
+  return config
 }

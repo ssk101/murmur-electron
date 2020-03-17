@@ -1,6 +1,6 @@
+const setupPug = require('electron-pug')
 const { app, BrowserWindow } = require('electron')
-const murmurUrl = 'https://asoftmurmur.com/?m=rno99thn20wve66wnd38fre22'
-let win
+const murmurUrl = 'rno99thn20wve66wnd38fre22'
 
 const opts = {
   width: process.env.DEV ? 1000 : 160,
@@ -8,7 +8,7 @@ const opts = {
 }
 
 async function createWindow() {
-  win = new BrowserWindow(Object.assign(opts, {
+  const win = new BrowserWindow(Object.assign(opts, {
     frame: false,
     // x: 0,
     // y: 0,
@@ -20,7 +20,9 @@ async function createWindow() {
     }
   }))
 
-  await win.loadURL(murmurUrl)
+  await setupPug({ pretty: true }, {})
+  win.loadURL(`file://${__dirname}/index.pug`)
+
 
   const js = async function() {
     const { remote } = require('electron')
